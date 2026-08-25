@@ -1,0 +1,23 @@
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+build/
+
+# IDE
+.vscode/ipch/
+*.suo
+*.sdf
+*.opensdf
+
+# Secrets (do NOT commit WiFi passwords!)
+include/secrets.h
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Firmware binaries
+*.bin
+*.hex
+*.elf

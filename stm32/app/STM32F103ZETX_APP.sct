@@ -1,0 +1,69 @@
+; STM32F103VET6 OTA App scatter file
+;
+; Flash layout used by the OTA project:
+;   Bootloader : 0x08000000 - 0x08003FFF, 16KB
+;   App A/run  : 0x08004000 - 0x0802BFFF, 160KB
+;   App B/cache: 0x0802C000 - 0x08053FFF, 160KB
+;   App C/back : 0x08054000 - 0x0807BFFF, 160KB
+;   OTA info   : 0x0807C000 - 0x0807FFFF, 16KB
+;
+; Single App Target rule:
+;   The App is always linked for App A/run address 0x08004000.
+;   OTA downloads this same image into App B/cache first, then the Bootloader
+;   copies it to App A before running it.
+;
+; This file is the final linker layout when:
+;   Linker -> Use Memory Layout from Target Dialog is unchecked
+;   Linker -> Scatter File points to this .sct file
+;
+; Important:
+;   Do not link the App to 0x0802C000 or 0x08054000. Those are storage/cache
+;   areas, not final execution addresses.
+
+; ---------------------------------------------------------------------------
+; LR_IROM1 / ER_IROM1
+; ---------------------------------------------------------------------------
+; Vector table and linker root code. It must start at 0x08004000 because the
+; Bootloader jumps to this address and the App also sets VTOR to APP_RUN_ADDR.
+; Keep this root block small and fixed so __Vectors is easy to verify.
+LR_IROM1 0x08004000 0x00000400  {
+  ER_IROM1 0x08004000 0x00000400  {
+    *.o (RESET, +First)
+    *(InRoot$$Sections)
+  }
+}
+
+; ---------------------------------------------------------------------------
+; LR_RAMFUNC / ER_RAMFUNC
+; ---------------------------------------------------------------------------
+; The machine code is stored in Flash at 0x08004400, but copied by the C runtime
+; to SRAM and executed at 0x20000000.
+;
+; flash_writer.o(.ramfunc) contains Flash erase/program primitives used while
+; receiving OTA data into App B/cache and while updating OTA_INFO. These
+; functions must not execute from Flash during Flash write/erase operations.
+LR_RAMFUNC 0x08004400 0x00000800  {
+  ER_RAMFUNC 0x20000000 0x00000800  {
+    flash_writer.o (.ramfunc)
+  }
+}
+
+; ---------------------------------------------------------------------------
+; LR_IROM2 / ER_IROM2
+; ---------------------------------------------------------------------------
+; Normal App code and read-only data. Load address equals execution address, so
+; it runs directly from Flash after the Bootloader copies the image into App A.
+;
+; App A ends at 0x0802BFFF. Keep this region inside the 160KB App A partition.
+LR_IROM2 0x08004C00 0x00027400  {
+  ER_IROM2 0x08004C00 0x00027400  {
+    .ANY (+RO)
+    .ANY (+XO)
+  }
+
+  ; Runtime RAM. The first 2KB of SRAM is reserved above for ER_RAMFUNC, so
+  ; normal RW/ZI data starts at 0x20000800.
+  RW_IRAM1 0x20000800 0x0000F800  {
+    .ANY (+RW +ZI)
+  }
+}

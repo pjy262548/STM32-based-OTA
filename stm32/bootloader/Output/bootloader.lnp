@@ -1,0 +1,11 @@
+--cpu Cortex-M3
+".\output\startup_stm32f103xe.o"
+".\output\main.o"
+".\output\boot.o"
+".\output\flash_if.o"
+".\output\ota_info.o"
+".\output\system_stm32f10x.o"
+--strict --scatter ".\STM32F103ZETX_BOOT.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Output\bootloader.map" -o .\Output\bootloader.axf

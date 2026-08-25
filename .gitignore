@@ -1,0 +1,50 @@
+# Keil µVision
+*.uvguix.*
+*.uvoptx
+*.uvprojx
+*.lst
+*.obj
+*.htm
+*.build_log.htm
+*.dep
+*.crf
+*.o
+*.d
+*.axf
+*.elf
+*.hex
+*.bin
+JLinkLog.txt
+JLinkSettings.ini
+
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+cmake-build-*/
+
+# ESP32 build
+esp32/build/
+esp32/.pio/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Firmware cache
+server/firmware/*.bin
+!server/firmware/.gitkeep
+
+# Build logs
+*.log
+

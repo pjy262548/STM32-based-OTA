@@ -1,0 +1,13 @@
+{
+  "latest": {
+    "version": "1.0.3",
+    "filename": "stm32_app.bin",
+    "url": "http://192.168.0.108:8080/firmware/stm32_app.bin",
+    "size": 8948,
+    "crc32": "77BAF9AE",
+    "target_mcu": "STM32F103VET6",
+    "min_bootloader_version": 1,
+    "changelog": "DS1 LED steady on"
+  },
+  "history": []
+}

@@ -1,0 +1,20 @@
+--cpu Cortex-M3
+".\output\startup_stm32f103xe.o"
+".\output\ota_protocol.o"
+".\output\flash_writer.o"
+".\output\version.o"
+".\output\crc32.o"
+".\output\uart_handler.o"
+".\output\stm32f10x_it.o"
+".\output\system_stm32f10x.o"
+".\output\main.o"
+".\output\stm32f10x_flash.o"
+".\output\stm32f10x_rcc.o"
+".\output\stm32f10x_gpio.o"
+".\output\stm32f10x_usart.o"
+".\output\stm32f10x_dma.o"
+".\output\misc.o"
+--strict --scatter "C:\Users\26895\Desktop\OTA\stm32\app\STM32F103ZETX_APP_B.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Output\app.map" -o C:\Users\26895\Desktop\OTA\stm32\app\Output\app_b.axf
